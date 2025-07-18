@@ -5,6 +5,8 @@ import com.example.tms.entity.Translation;
 import com.example.tms.repository.TranslationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +23,8 @@ public class TranslationService {
     private final TranslationRepository translationRepository;
 
     @Transactional(readOnly = true)
-    public List<TranslationDto> searchTranslations(Map<String, String> filters) {
-        Specification<Translation> spec = Specification.allOf();
+    public Page<TranslationDto> searchTranslations(Map<String, String> filters, Pageable pageable) {
+        Specification<Translation> spec = (root, query, cb) -> cb.conjunction();
 
         if (filters.containsKey("locale") && !filters.get("locale").isBlank()) {
             spec = spec.and((root, query, cb) -> cb.equal(root.get("locale"), filters.get("locale")));
@@ -38,8 +40,8 @@ public class TranslationService {
             spec = spec.and((root, query, cb) -> cb.isMember(tag, root.get("tags")));
         }
 
-        return translationRepository.findAll(spec).stream()
-                .map(this::mapToDto).collect(Collectors.toList());
+        return translationRepository.findAll(spec, pageable)
+                .map(this::mapToDto);
     }
 
     public TranslationDto createTranslation(TranslationDto dto) {

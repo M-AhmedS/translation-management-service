@@ -7,7 +7,7 @@ services:
     depends_on:
       - db
   db:
-    image: postgres:15
+    image: postgres:14.5
     environment:
       POSTGRES_USER: tms
       POSTGRES_PASSWORD: tms

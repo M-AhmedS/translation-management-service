@@ -26,7 +26,7 @@ public class Translation {
     @Column(nullable = false)
     private String key;
 
-    @Column(nullable = false)
+    @Column(name = "value", nullable = false)
     private String content;
 
     @ElementCollection
