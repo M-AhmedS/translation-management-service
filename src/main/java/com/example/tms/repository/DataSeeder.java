@@ -24,7 +24,7 @@ public class DataSeeder implements CommandLineRunner {
             List<Translation> bulk = new ArrayList<>();
             for (int i=0; i<100000; i++){
                 Translation trans = new Translation();
-                trans.setKey("key_"+ i);
+                trans.setTranslationKey("key_"+ i);
                 trans.setContent("Content "+ i);
                 trans.setLocale("en");
                 trans.setTags(Set.of("web"));

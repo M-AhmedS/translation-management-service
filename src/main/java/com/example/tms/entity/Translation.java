@@ -24,9 +24,9 @@ public class Translation {
     private String locale;
 
     @Column(nullable = false)
-    private String key;
+    private String translationKey;
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "content", nullable = false)
     private String content;
 
     @ElementCollection

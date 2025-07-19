@@ -47,7 +47,7 @@ public class TranslationService {
     public TranslationDto createTranslation(TranslationDto dto) {
         Translation translation = new Translation();
         translation.setLocale(dto.getLocale());
-        translation.setKey(dto.getKey());
+        translation.setTranslationKey(dto.getKey());
         translation.setContent(dto.getContent());
         translation.setTags(dto.getTags());
 
@@ -56,14 +56,14 @@ public class TranslationService {
     }
 
     private TranslationDto mapToDto(Translation translation) {
-        return new TranslationDto(translation.getId(), translation.getLocale(), translation.getKey(),
+        return new TranslationDto(translation.getId(), translation.getLocale(), translation.getTranslationKey(),
                 translation.getContent(), translation.getTags());
     }
 
     @Transactional(readOnly = true)
     public Map<String, String> exportTranslations(String locale){
         List<Translation> translations = translationRepository.findByLocale(locale);
-        return translations.stream().collect(Collectors.toMap(Translation::getKey,Translation::getContent,
+        return translations.stream().collect(Collectors.toMap(Translation::getTranslationKey,Translation::getContent,
                 (existing, replacement) -> existing));
     }
 
@@ -71,7 +71,7 @@ public class TranslationService {
         Translation existing = translationRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Translation not found with id: " + id));
         existing.setLocale(dto.getLocale());
-        existing.setKey(dto.getKey());
+        existing.setTranslationKey(dto.getKey());
         existing.setContent(dto.getContent());
         existing.setTags(dto.getTags());
 
